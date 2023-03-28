@@ -17,10 +17,10 @@ st.write('You selected:', option)
 use_defo = st.selectbox('Select Dataset',('Rice','Sugar','oil'))
 if use_defo == 'Rice':
     df = 'Riceprice.csv'
-    else if df == 'Sugar':
-        df = 'Sugar.csv'
-    else :
-        df='oil.csv'
+elif df == 'Sugar':
+    df = 'Sugar.csv'
+else :
+    df='oil.csv'
 
 if df is not None:
     data = pd.read_csv(df)
