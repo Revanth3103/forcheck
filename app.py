@@ -15,10 +15,10 @@ st.write('CSV file can be updated and reuploaded any number of times inorder to 
 use_defo = st.selectbox('Select Dataset',('Rice','Sugar','oil'))
 if use_defo == 'Rice':
     df = 'Riceprice.csv'
-elif df == 'Sugar':
+elif use_defo == 'Sugar':
     df = 'Sugar.csv'
 else :
-    df='oil.csv'
+    df ='oil.csv'
 
 if df is not None:
     data = pd.read_csv(df)
