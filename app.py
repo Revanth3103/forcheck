@@ -20,6 +20,8 @@ if use_defo == 'Rice':
     df = 'Riceprice.csv'
 elif use_defo == 'sugar':
     df = 'sugar.csv'
+elif use_defo == 'coffee':
+    df = 'coffee.csv'
 else :
     df ='oil.csv'
 
