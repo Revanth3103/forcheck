@@ -20,10 +20,10 @@ if use_defo == 'Rice':
     df = 'Riceprice.csv'
 elif use_defo == 'sugar':
     df = 'sugar.csv'
-elif use_defo == 'coffee':
-    df = 'coffee.csv'
+elif use_defo == 'oil':
+    df = 'oil.csv'
 else :
-    df ='oil.csv'
+    df ='coffee.csv'
 
 if df is not None:
     data = pd.read_csv(df)
