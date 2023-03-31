@@ -59,7 +59,7 @@ if df is not None:
     fcst_filtered =  fcst[fcst['ds'] > max_date]    
     st.write(fcst_filtered)
     """
-    The next few visuals show a high level trend of predicted values, day of week trends, and yearly trends (if dataset covers multiple years). The blue shaded area represents upper and lower confidence intervals.
+    The next few visuals show a high level trend of predicted values, day of week trends, and yearly trends (if dataset covers multiple years).
     """
     fig2 = m.plot_components(forecast)
     st.write(fig2)
