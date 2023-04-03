@@ -12,7 +12,7 @@ st.title('Forecasting')
 st.write('Import the time series csv file here. Columns must be labeled ds and y. The input to Prophet is always a dataframe with two columns: ds and y. ', type='csv')
 st.write('CSV file can be updated and reuploaded any number of times inorder to get prediction and forecasting depends on only two factors date(ds) and target column(y)')
 
-l = ['Rice','sugar','oil']
+l = ['Rice','sugar','oil','coffee']
 use_defo = st.selectbox('Select Dataset',l)
 if use_defo == "":
     st.write("Choose one")
@@ -20,7 +20,9 @@ if use_defo == 'Rice':
     df = 'Riceprice.csv'
 elif use_defo == 'sugar':
     df = 'sugar.csv'
-else :
+elif use_defo == 'coffee':
+    df= 'coffee.csv'
+else:    
     df = 'oil.csv'
 
 
