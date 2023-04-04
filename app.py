@@ -13,7 +13,8 @@ st.write('Import the time series csv file here. Columns must be labeled ds and y
 st.write('CSV file can be updated and reuploaded any number of times inorder to get prediction and forecasting depends on only two factors date(ds) and target column(y)')
 
 l = ['Rice','sugar','oil','coffee']
-use_defo = st.selectbox('Select Dataset',l)
+# st.selectbox('Select Dataset',l)
+use_defo = st.sidebar.header('Import Dataset to Use Available Features:',l)
 if use_defo == "":
     st.write("Choose one")
 if use_defo == 'Rice':
