@@ -14,7 +14,7 @@ st.write('CSV file can be updated and reuploaded any number of times inorder to 
 
 al = ['Rice','sugar','oil','coffee']
 # st.selectbox('Select Dataset',l)
-use_defo = st.selectbox('Select one :')
+use_defo = st.selectbox('Select one :',al)
 if use_defo == "":
     st.write("Choose one")
 if use_defo == 'Rice':
