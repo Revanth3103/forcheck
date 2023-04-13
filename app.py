@@ -40,8 +40,7 @@ if dataset:
     future = m.make_future_dataframe(periods=periods_input)
     forecast = m.predict(future)
     fcst = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
-
-    fcst_filtered =  fcst[fcst['ds'] > max_date]    
+    fcst_filtered =  fcst[fcst['ds'] > max_value]    
     st.write(fcst_filtered)
     """
     The next few visuals show a high level trend of predicted values, day of week trends, and yearly trends (if dataset covers multiple years). The blue line shows change of price with respect to date.
