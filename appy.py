@@ -6,6 +6,7 @@ from prophet.diagnostics import performance_metrics
 from prophet.diagnostics import cross_validation
 from prophet.plot import plot_cross_validation_metric
 import base64
+import app
 
 st.title(' Price Forecasting')
 df = st.file_uploader('Import the time series csv file here. Columns must be labeled ds and y. The input to Prophet is always a dataframe with two columns: ds and y. The ds (datestamp) column should be of a format expected by Pandas, ideally YYYY-MM-DD for a date or YYYY-MM-DD HH:MM:SS for a timestamp.', type='csv')
