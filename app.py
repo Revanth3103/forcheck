@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import numpy as np
+from prophet import Prophet
+from prophet.diagnostics import performance_metrics
+from prophet.diagnostics import cross_validation
+from prophet.plot import plot_cross_validation_metric
+import base64
 import functions
 
 st.set_page_config(layout = "wide", page_title='Visualize')
@@ -27,7 +33,31 @@ if dataset:
     n, m = df.shape
     st.write(f'<p style="font-size:130%">Dataset contains {n} rows and {m} columns.</p>', unsafe_allow_html=True)   
     st.dataframe(df)
+    
+if df is not None:
+    data = pd.read_csv(df)
+    data['ds'] = pd.to_datetime(data['ds'],errors='coerce') 
+    st.write(data)
+    max_date = data['ds'].max()
+    #st.write(max_date)
+    
+    periods_input = st.number_input('How many periods would you like to forecast into the future?',
+    min_value = 1, max_value = 365)
 
+    m = Prophet()
+    m.fit(data)
+    future = m.make_future_dataframe(periods=periods_input)
+    forecast = m.predict(future)
+    fcst = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+
+    fcst_filtered =  fcst[fcst['ds'] > max_date]    
+    st.write(fcst_filtered)
+    """
+    The next few visuals show a high level trend of predicted values, day of week trends, and yearly trends (if dataset covers multiple years). The blue line shows change of price with respect to date.
+    """
+    fig2 = m.plot_components(forecast)
+    st.write(fig2)
+    st.write('Trend is like similarity which is observed from given data and plot depends on datestamp') 
 
     all_vizuals = ['Info', 'null values',  'Target Analysis']
     functions.sidebar_space(3)         
@@ -46,8 +76,7 @@ if dataset:
             c1, c2, c3 = st.columns([0.5, 2, 0.5])
             c2.dataframe(functions.df_isnull(df), width=1500)
             functions.space(2)
-            
-        
+                    
     if 'Target Analysis' in vizuals:
         st.subheader("Select target column:")    
         target_column = st.selectbox("", df.columns, index = len(df.columns) - 1)
@@ -59,4 +88,4 @@ if dataset:
 
     num_columns = df.select_dtypes(exclude = 'object').columns
     cat_columns = df.select_dtypes(include = 'object').columns
-import appy
+
