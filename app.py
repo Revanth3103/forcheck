@@ -27,19 +27,16 @@ if dataset:
     if file_format == 'csv' or use_defo:
         df = pd.read_csv(dataset)
     else:
-        df = pd.read_excel(dataset)    
-if df is not None:
-    data = pd.read_csv(df)
-    data['ds'] = pd.to_datetime(data['ds'],errors='coerce') 
-    st.write(data)
-    max_date = data['ds'].max()
-    #st.write(max_date)
+        df = pd.read_excel(dataset)   
+        df['ds'] = pd.to_datetime(df['ds'],errors='coerce') 
+        st.write(df)
+        max_date = df['ds'].max()
     
     periods_input = st.number_input('How many periods would you like to forecast into the future?',
     min_value = 1, max_value = 365)
 
     m = Prophet()
-    m.fit(data)
+    m.fit(df)
     future = m.make_future_dataframe(periods=periods_input)
     forecast = m.predict(future)
     fcst = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
