@@ -1,68 +1,67 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-from prophet import Prophet
-from prophet.diagnostics import performance_metrics
-from prophet.diagnostics import cross_validation
-from prophet.plot import plot_cross_validation_metric
-import base64
+import plotly.express as px
 
-st.title('Forecasting')
+import functions
 
-st.write('Import the time series csv file here. Columns must be labeled ds and y. The input to Prophet is always a dataframe with two columns: ds and y. ', type='csv')
-st.write('CSV file can be updated and reuploaded any number of times inorder to get prediction and forecasting depends on only two factors date(ds) and target column(y)')
+st.set_page_config(layout = "wide", page_title='Visualize')
 
-al = ['Rice','sugar','oil','Pista']
-# st.selectbox('Select Dataset',l)
-use_defo = st.selectbox('Select one :',al)
-if use_defo == "":
-    st.write("Choose one")
-if use_defo == 'Rice':
-    df = 'Riceprice.csv'
-elif use_defo == 'sugar':
-    df = 'sugar.csv'
-elif use_defo == 'oil':
-    df= 'oil.csv'
-else:    
-    df = 'Pista.csv'
+st.header("Visualize Data")
 
-if df is not None:
-    data = pd.read_csv(df)
-    data['ds'] = pd.to_datetime(data['ds'],errors='coerce') 
+st.write('<p style="font-size:160%">You will be able to:</p>', unsafe_allow_html=True)
+
+st.write('<p style="font-size:100%">&nbsp 1. See the whole data</p>', unsafe_allow_html=True)
+st.write('<p style="font-size:100%">&nbsp 2. Get column names,non null info, data types info</p>', unsafe_allow_html=True)
+st.write('<p style="font-size:100%">&nbsp 3. Get the count of Null values</p>', unsafe_allow_html=True)
+st.write('<p style="font-size:100%">&nbsp 4. Distribution of target using plot</p>', unsafe_allow_html=True)
+
+functions.space()
+st.write('<p style="font-size:130%">Import Dataset</p>', unsafe_allow_html=True)
+
+file_format = st.radio('Select file format:', ('csv', 'excel'), key='file_format')
+dataset = st.file_uploader(label = '')
+
+st.sidebar.header('Import Dataset to Use Available Features:')
+
+if dataset:
+    if file_format == 'csv' or use_defo:
+        df = pd.read_csv(dataset)
+    else:
+        df = pd.read_excel(dataset)
     
-    st.write(data)
+    st.subheader('Dataframe:')
+    n, m = df.shape
+    st.write(f'<p style="font-size:130%">Dataset contains {n} rows and {m} columns.</p>', unsafe_allow_html=True)   
+    st.dataframe(df)
+
+
+    all_vizuals = ['Info', 'null values',  'Target Analysis']
+    functions.sidebar_space(3)         
+    vizuals = st.sidebar.multiselect("Choose which visualizations you want to see 👇", all_vizuals)
+
+    if 'Info' in vizuals:
+        st.subheader('Info:')
+        c1, c2, c3 = st.columns([1, 2, 1])
+        c2.dataframe(functions.df_info(df))
+
+    if 'null values' in vizuals:
+        st.subheader('NA Value Information:')
+        if df.isnull().sum().sum() == 0:
+            st.write('There are no null values in your dataset.')
+        else:
+            c1, c2, c3 = st.columns([0.5, 2, 0.5])
+            c2.dataframe(functions.df_isnull(df), width=1500)
+            functions.space(2)
+            
+        
+    if 'Target Analysis' in vizuals:
+        st.subheader("Select target column:")    
+        target_column = st.selectbox("", df.columns, index = len(df.columns) - 1)
     
-    max_date = data['ds'].max()
-    #st.write(max_date)
+        st.subheader("Histogram of target column")
+        fig = px.histogram(df, x = target_column)
+        c1, c2, c3 = st.columns([0.5, 2, 0.5])
+        c2.plotly_chart(fig)
 
-"""
-
-Forecasts become less accurate with larger forecast days (1-365 days).
-"""
-
-periods_input = st.number_input('How many periods would you like to forecast into the future?',
-min_value = 1, max_value = 365)
-
-if df is not None:
-    m = Prophet()
-    m.fit(data)
-
-"""
-### Step 3: Visualize Forecast Data
-
-The below visual shows future predicted values. "yhat" is the predicted value, yhat_lower is min. value and yhat_upper is max. value we can use from obtained data.
-"""
-if df is not None:
-    future = m.make_future_dataframe(periods=periods_input)
-    
-    forecast = m.predict(future)
-    fcst = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
-
-    fcst_filtered =  fcst[fcst['ds'] > max_date]    
-    st.write(fcst_filtered)
-    """
-    The next few visuals show a high level trend of predicted values, day of week trends, and yearly trends (if dataset covers multiple years).
-    """
-    fig2 = m.plot_components(forecast)
-    st.write(fig2)
-    st.write('Trend is like similarity which is observed from given data and plot depends on datestamp') 
+    num_columns = df.select_dtypes(exclude = 'object').columns
+    cat_columns = df.select_dtypes(include = 'object').columns
