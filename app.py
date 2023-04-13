@@ -2,10 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import functions
-import appy
 
 st.set_page_config(layout = "wide", page_title='Visualize')
-
 st.header("Visualize Data")
 st.write('<p style="font-size:160%">You will be able to:</p>', unsafe_allow_html=True)
 st.write('<p style="font-size:100%">&nbsp 1. See the whole data</p>', unsafe_allow_html=True)
@@ -61,3 +59,4 @@ if dataset:
 
     num_columns = df.select_dtypes(exclude = 'object').columns
     cat_columns = df.select_dtypes(include = 'object').columns
+import appy
