@@ -1,23 +1,19 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
 import functions
+import appy
 
 st.set_page_config(layout = "wide", page_title='Visualize')
 
 st.header("Visualize Data")
-
 st.write('<p style="font-size:160%">You will be able to:</p>', unsafe_allow_html=True)
-
 st.write('<p style="font-size:100%">&nbsp 1. See the whole data</p>', unsafe_allow_html=True)
 st.write('<p style="font-size:100%">&nbsp 2. Get column names,non null info, data types info</p>', unsafe_allow_html=True)
 st.write('<p style="font-size:100%">&nbsp 3. Get the count of Null values</p>', unsafe_allow_html=True)
 st.write('<p style="font-size:100%">&nbsp 4. Distribution of target using plot</p>', unsafe_allow_html=True)
-
 functions.space()
 st.write('<p style="font-size:130%">Import Dataset</p>', unsafe_allow_html=True)
-
 file_format = st.radio('Select file format:', ('csv', 'excel'), key='file_format')
 dataset = st.file_uploader(label = '')
 
