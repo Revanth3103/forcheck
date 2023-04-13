@@ -27,13 +27,7 @@ if dataset:
     if file_format == 'csv' or use_defo:
         df = pd.read_csv(dataset)
     else:
-        df = pd.read_excel(dataset)
-    
-    st.subheader('Dataframe:')
-    n, m = df.shape
-    st.write(f'<p style="font-size:130%">Dataset contains {n} rows and {m} columns.</p>', unsafe_allow_html=True)   
-    st.dataframe(df)
-    
+        df = pd.read_excel(dataset)    
 if df is not None:
     data = pd.read_csv(df)
     data['ds'] = pd.to_datetime(data['ds'],errors='coerce') 
@@ -58,6 +52,11 @@ if df is not None:
     fig2 = m.plot_components(forecast)
     st.write(fig2)
     st.write('Trend is like similarity which is observed from given data and plot depends on datestamp') 
+    
+    st.subheader('Dataframe:')
+    n, m = df.shape
+    st.write(f'<p style="font-size:130%">Dataset contains {n} rows and {m} columns.</p>', unsafe_allow_html=True)   
+    st.dataframe(df)
 
     all_vizuals = ['Info', 'null values',  'Target Analysis']
     functions.sidebar_space(3)         
